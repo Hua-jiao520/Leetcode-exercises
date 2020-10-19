@@ -1,0 +1,84 @@
+剑指 Offer 04. 二维数组中的查找
+
+在一个 n * m 的二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。
+
+ 
+
+示例:
+
+现有矩阵 matrix 如下：
+
+[
+  [1,   4,  7, 11, 15],
+  [2,   5,  8, 12, 19],
+  [3,   6,  9, 16, 22],
+  [10, 13, 14, 17, 24],
+  [18, 21, 23, 26, 30]
+]
+
+给定 target = 5，返回 true。
+
+给定 target = 20，返回 false。
+
+ 
+
+限制：
+
+0 <= n <= 1000
+
+0 <= m <= 1000
+
+
+
+
+解法：
+class Solution {
+    public boolean findNumberIn2DArray(int[][] matrix, int target) {
+        
+        //若其不为二维数组，则没有执行的必要
+        if(matrix == null || matrix.length == 0 || matrix[0].length == 0){
+            return false;
+        }
+        
+
+        //用来声明数组的行和列的使用范围
+        int rows = matrix.length;
+        int column = matrix[0].length;
+        
+
+        //思路：
+        // 每行都是递增的，每列也都是递增的，如果以左上角为例开始找
+        // 如果目标值大于当前的值，我们就需要往更大的找，但这个时候无论往右还是往下找都是比当前值大
+        // 所以我们无法确定该往哪个方向找，右下角也是同理
+
+        // 所以我们应该采用左下角或者右上角
+        // 以左下角为例，若target值大于当前值，我们就往下找
+        // 如果target值小于当前值，我们就往左边找
+
+
+        //从第0行col - 1列开始查找，也就是第1行最后一列的那个数字开始(右上角)
+        
+        //行：递减
+        //列：递增
+        int row = 0;
+        int col = column-1;
+
+        while(row < rows && col >= 0) {
+            int num = matrix[row][col];
+            if(num == target){
+                return true;
+            }
+
+            else if(num > target){
+                col--;
+                //到前面去找
+            }
+
+            else{
+                row++;
+                //到下面去找
+            }
+        }
+        return false;
+    }
+}
